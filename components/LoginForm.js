@@ -14,9 +14,7 @@ import {
   ExtraText,
   ExtraView,
   TextLink,
-  TextLinkContent,
-  StyledGoogleButton,
-  GoogleButtonText
+  TextLinkContent
 } from './styles';
 import { Colors } from './styles';
 import { Ionicons } from '@expo/vector-icons';
@@ -67,6 +65,7 @@ export default function LoginForm() {
               <RighttIcon onPress={() => setHidePassword(!hidePassword)}>
                 <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={primary} />
               </RighttIcon>
+            </View>
               <MessageBox>...</MessageBox>
               <StyledButton onPress={props.handleSubmit}>
                   <ButtonText>
@@ -80,7 +79,12 @@ export default function LoginForm() {
                       Sign in with Google Account
                   </ButtonText>
               </StyledButton>
-            </View>
+              <ExtraView>
+                  <ExtraText>Don't have an account? </ExtraText>
+                  <TextLink>
+                      <TextLinkContent>Sign up</TextLinkContent>
+                  </TextLink>
+              </ExtraView>
           </StyledFormArea>
         )}
       </Formik>
