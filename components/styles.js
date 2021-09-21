@@ -29,9 +29,28 @@ export const InnerContainer = styled.View`
     align-items: center;
 `
 
+export const WelcomeContainer = styled(InnerContainer)`
+    padding: 25px;
+    padding-top: 10px;
+    justify-content: center;
+`
+
 export const PageLogo = styled.Image`
     width: 150px;
     height: 100px;
+`
+
+export const Avatar = styled.Image`
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+`
+
+export const WelcomeImage = styled.Image`
+    height: 50%;
+    width: 100%;
 `
 
 export const PageTitle = styled.Text`
@@ -40,6 +59,10 @@ export const PageTitle = styled.Text`
     font-weight: bold;
     color: ${secondary};
     padding: 10px;
+
+    ${(props) => props.welcome && `
+        font-size: 35px;
+    `}
 `
 
 export const SubTitle = styled.Text`
@@ -48,6 +71,11 @@ export const SubTitle = styled.Text`
     letter-spacing: 1px;
     font-weight: bold;
     color: ${accent};
+
+    ${(props) => props.welcome && `
+        margin-bottom: 5px;
+        font-weight: normal;
+    `}
 `
 
 export const StyledFormArea = styled.View`
@@ -64,6 +92,7 @@ export const StyledTextInput = styled.TextInput`
     height: 60px;
     margin-bottom: 10px;
     color: ${secondary};
+    width: 100%;
 `
 
 export const StyledInputLabel = styled.Text`
@@ -104,7 +133,7 @@ export const StyledButton = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
     color: ${contrastAccent};
-    font-size: 16px;
+    font-size: 20px;
 
     ${(props) => props.google == true && `
         padding: 25px;
@@ -119,7 +148,7 @@ export const MessageBox = styled.Text`
 export const Line = styled.View`
     height: 1px;
     width: 100%;
-    background-color: ${grey};
+    background-color: ${secondary};
     margin-vertical: 10px;
 `
 

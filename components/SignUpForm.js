@@ -51,7 +51,6 @@ export default function SignUpForm() {
           onChange={onChange}
         />
       )}
-      <View>
         <Formik
           initialValues={{
             fullName: '',
@@ -155,7 +154,6 @@ export default function SignUpForm() {
             </StyledFormArea>
           )}
         </Formik>
-      </View>
     </View>
   );
 }
