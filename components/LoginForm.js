@@ -21,7 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { grey, primary, contrastAccent } = Colors;
 
-export default function LoginForm() {
+export default function LoginForm({ navigation }) {
   const [hidePassword, setHidePassword] = useState(true);
 
   return (
@@ -31,7 +31,10 @@ export default function LoginForm() {
           email: '',
           password: '',
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          console.log(values)
+          navigation.navigate('Welcome')
+        }}
       >
         {(props) => (
           <StyledFormArea>
@@ -81,7 +84,7 @@ export default function LoginForm() {
               </StyledButton>
               <ExtraView>
                   <ExtraText>Don't have an account? </ExtraText>
-                  <TextLink>
+                  <TextLink onPress={() => navigation.navigate('SignUp')}>
                       <TextLinkContent>Sign up</TextLinkContent>
                   </TextLink>
               </ExtraView>

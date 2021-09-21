@@ -19,7 +19,7 @@ const {primary, secondary, tertiary, accent, contrastAccent, grey, google} = Col
 export const StyledContainer = styled.View`
     flex: 1;
     padding: 25px;
-    padding-top: ${StatusBarHeight + 10}px;
+    padding-top: ${StatusBarHeight + 30}px;
     background-color: ${tertiary};
 `
 

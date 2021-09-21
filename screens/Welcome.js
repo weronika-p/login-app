@@ -13,7 +13,7 @@ import {
 } from '../components/styles';
 import { StatusBar } from 'expo-status-bar';
 
-const Welcome = () => {
+const Welcome = ({ navigation }) => {
   return (
     <>
       <StatusBar style="dark" />
@@ -26,7 +26,7 @@ const Welcome = () => {
           <StyledFormArea>
             <Avatar source={require('./../assets/avatar.png')} />
             <Line />
-            <StyledButton onPress={() => {}}>
+            <StyledButton onPress={() => navigation.navigate('Login')}>
               <ButtonText>Logout</ButtonText>
             </StyledButton>
           </StyledFormArea>

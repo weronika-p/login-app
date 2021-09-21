@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import SignUpForm from '../components/SignUpForm';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
     return (
       <KeyboardAvoidingWrapper>
         <StyledContainer>
@@ -12,7 +12,7 @@ const SignUp = () => {
           <InnerContainer>
             <PageTitle>Login App</PageTitle>
             <SubTitle>Account Sign Up</SubTitle>
-            <SignUpForm />
+            <SignUpForm navigation={navigation} />
           </InnerContainer>
         </StyledContainer>
       </KeyboardAvoidingWrapper>

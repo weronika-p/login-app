@@ -22,7 +22,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 const { grey, primary, contrastAccent } = Colors;
 
-export default function SignUpForm() {
+export default function SignUpForm({ navigation }) {
   const [hidePassword, setHidePassword] = useState(true);
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(2021, 9, 1));
@@ -142,12 +142,12 @@ export default function SignUpForm() {
               </View>
               <MessageBox>...</MessageBox>
               <StyledButton onPress={props.handleSubmit}>
-                <ButtonText>Login</ButtonText>
+                <ButtonText>Sign Up</ButtonText>
               </StyledButton>
               <Line />
               <ExtraView>
                 <ExtraText>Already have an account? </ExtraText>
-                <TextLink>
+                <TextLink onPress={() => navigation.navigate('Login')}>
                   <TextLinkContent>Login</TextLinkContent>
                 </TextLink>
               </ExtraView>

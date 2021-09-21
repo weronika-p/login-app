@@ -10,7 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import LoginForm from '../components/LoginForm';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
@@ -19,7 +19,7 @@ const Login = () => {
           <PageLogo source={require('./../assets/login.png')} />
           <PageTitle>Login App</PageTitle>
           <SubTitle>Account Login</SubTitle>
-          <LoginForm />
+          <LoginForm navigation={navigation} />
         </InnerContainer>
       </StyledContainer>
     </KeyboardAvoidingWrapper>
