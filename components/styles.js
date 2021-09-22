@@ -11,10 +11,11 @@ export const Colors = {
     accent: "#ff2c9c",
     contrastAccent: "#fff",
     grey: "#474747",
-    google: "#4285F4"
+    google: "#4285F4",
+    error: "#DB4437"
 }
 
-const {primary, secondary, tertiary, accent, contrastAccent, grey, google} = Colors
+const {primary, secondary, tertiary, accent, contrastAccent, grey, google, error} = Colors
 
 export const StyledContainer = styled.View`
     flex: 1;
@@ -143,6 +144,7 @@ export const ButtonText = styled.Text`
 export const MessageBox = styled.Text`
     text-align: center;
     font-size: 13px;
+    color: ${props => props.type == 'SUCCESS' ? google : error}
 `
 
 export const Line = styled.View`

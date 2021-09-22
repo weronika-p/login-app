@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import {
   LeftIcon,
   RighttIcon,
@@ -18,11 +18,43 @@ import {
 } from './styles';
 import { Colors } from './styles';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const { grey, primary, contrastAccent } = Colors;
 
 export default function LoginForm({ navigation }) {
   const [hidePassword, setHidePassword] = useState(true);
+  const [message, setMessage] = useState()
+  const [messageType, setMessageType] = useState()
+
+  const handleLogin = (credentials, setSubmitting) => {
+    handleMessage(null)
+    const url = 'http://localhost:3000/user/signin'
+
+    axios
+      .post(url, credentials)
+      .then((response) => {
+        const result = response.data
+        const { message, status, data } = result
+
+        if(status !== 'SUCCESS') {
+          handleMessage(message, status)
+        } else {
+          navigation.navigate('Welcome', {...data[0]})
+        }
+        setSubmitting(false)
+      })
+      .catch(err => {
+        console.log(err.json())
+        setSubmitting(false)
+        handleMessage('An error occurred. Check your network and trya gain')
+    })
+  }
+
+  const handleMessage = (message, type = '') => {
+    setMessage(message)
+    setMessageType(type)
+  }
 
   return (
     <View>
@@ -31,9 +63,13 @@ export default function LoginForm({ navigation }) {
           email: '',
           password: '',
         }}
-        onSubmit={(values) => {
-          console.log(values)
-          navigation.navigate('Welcome')
+        onSubmit={(values, {setSubmitting}) => {
+          if (values.email == '' || values.password == '') {
+            handleMessage('Please fulfill all the fields')
+            setSubmitting(false)
+          } else {
+            handleLogin(values, setSubmitting)
+          }
         }}
       >
         {(props) => (
@@ -69,12 +105,15 @@ export default function LoginForm({ navigation }) {
                 <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={primary} />
               </RighttIcon>
             </View>
-              <MessageBox>...</MessageBox>
-              <StyledButton onPress={props.handleSubmit}>
+              <MessageBox type={messageType}>{message}</MessageBox>
+              {!props.isSubmitting && <StyledButton onPress={props.handleSubmit}>
                   <ButtonText>
                       Login
                   </ButtonText>
-              </StyledButton>
+              </StyledButton>}
+              {props.isSubmitting && <StyledButton disabled={true}>
+                  <ActivityIndicator size='large' color={primary} />
+              </StyledButton>}
               <Line />
               <StyledButton google={true} onPress={props.handleSubmit}>
                   <Ionicons name='logo-google' size={25} color={contrastAccent}/>
