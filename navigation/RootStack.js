@@ -4,9 +4,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "../screens/Login";
 import SignUp from "../screens/Signup";
 import Welcome from "../screens/Welcome";
-import { Colors } from "../components/styles";
-
-const { tertiary } = Colors
+import TasksList from "../screens/TasksList";
+import TaskItem from "../screens/TaskItem";
 
 const Stack = createNativeStackNavigator()
 
@@ -30,6 +29,8 @@ const RootStack = () => {
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="Welcome" component={Welcome} />
+                <Stack.Screen name="TasksList" component={TasksList} />
+                <Stack.Screen name="TaskDetail" component={TaskItem} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -19,6 +19,8 @@ import {
 import { Colors } from './styles';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import * as Google from 'expo-google-app-auth'
+import { url } from '../constants/constants';
 
 const { grey, primary, contrastAccent } = Colors;
 
@@ -26,13 +28,14 @@ export default function LoginForm({ navigation }) {
   const [hidePassword, setHidePassword] = useState(true);
   const [message, setMessage] = useState()
   const [messageType, setMessageType] = useState()
+  const [googleSubmitting, setGoogleSubmitting] = useState(false)
 
   const handleLogin = (credentials, setSubmitting) => {
     handleMessage(null)
-    const url = 'http://localhost:3000/user/signin'
+    const path = `${url}user/signin`
 
     axios
-      .post(url, credentials)
+      .post(path, credentials)
       .then((response) => {
         const result = response.data
         const { message, status, data } = result
@@ -45,10 +48,38 @@ export default function LoginForm({ navigation }) {
         setSubmitting(false)
       })
       .catch(err => {
-        console.log(err.json())
         setSubmitting(false)
-        handleMessage('An error occurred. Check your network and trya gain')
+        handleMessage('An error occurred. Check your network and try again')
+        console.log(err.toJSON())
     })
+  }
+
+  const handleGoogleSignIn = () => {
+    setGoogleSubmitting(true)
+    const config = {
+      iosClientId: '99711018903-d1h8ql2f2lona7suob60615hnmd2oh18.apps.googleusercontent.com',
+      androidClientId: '99711018903-snrtbk0q8282l7ckdldktaet557sll42.apps.googleusercontent.com',
+      scopes: ['profile', 'email']
+    }
+
+    Google
+      .logInAsync(config)
+      .then((result) => {
+        const { type, user } = result
+        if (type == 'success') {
+          const { email, name, photoUrl } = user
+          handleMessage('Google sigin successful', 'SUCCESS')
+          setTimeout(() => navigation.navigate('Welcome', {email, name, photoUrl}))
+        } else {
+          handleMessage('Google signin was cancelled')
+        }
+        setGoogleSubmitting(false)
+      })
+      .catch(error => {
+        console.log(error)
+        handleMessage('An error occured. Check your network and try again')
+        setGoogleSubmitting(false)
+      })
   }
 
   const handleMessage = (message, type = '') => {
@@ -112,15 +143,22 @@ export default function LoginForm({ navigation }) {
                   </ButtonText>
               </StyledButton>}
               {props.isSubmitting && <StyledButton disabled={true}>
-                  <ActivityIndicator size='large' color={primary} />
+                  <ActivityIndicator size='large' color={contrastAccent} />
               </StyledButton>}
               <Line />
-              <StyledButton google={true} onPress={props.handleSubmit}>
+              {!googleSubmitting && 
+                <StyledButton google={true} onPress={handleGoogleSignIn}>
                   <Ionicons name='logo-google' size={25} color={contrastAccent}/>
                   <ButtonText>
                       Sign in with Google Account
                   </ButtonText>
-              </StyledButton>
+                </StyledButton>
+              }
+              {googleSubmitting && 
+                <StyledButton google={true} disabled={true}>
+                  <ActivityIndicator size='large' color={contrastAccent} />
+                </StyledButton>
+              }
               <ExtraView>
                   <ExtraText>Don't have an account? </ExtraText>
                   <TextLink onPress={() => navigation.navigate('SignUp')}>

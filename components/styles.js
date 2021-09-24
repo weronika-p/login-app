@@ -17,6 +17,14 @@ export const Colors = {
 
 const {primary, secondary, tertiary, accent, contrastAccent, grey, google, error} = Colors
 
+const priorityColors = {
+    1: secondary,
+    2: "#27538F",
+    3: "#3768A4",
+    4: "#477EB9",
+    5: primary
+}
+
 export const StyledContainer = styled.View`
     flex: 1;
     padding: 25px;
@@ -50,7 +58,7 @@ export const Avatar = styled.Image`
 `
 
 export const WelcomeImage = styled.Image`
-    height: 50%;
+    height: 40%;
     width: 100%;
 `
 
@@ -176,4 +184,38 @@ export const TextLink = styled.TouchableOpacity`
 export const TextLinkContent = styled.Text`
     color: ${accent}
     font-size: 15px;
+`
+
+export const TaskCard = styled.View`
+    border-radius: 7px;
+    color: ${contrastAccent};
+    margin: 100px 4px;
+    ${props => props.priority === 1 &&`
+        background-color: ${secondary}
+    `}
+    ${props => props.priority === 2 &&`
+        background-color: ${priorityColors[2]}
+    `}
+    ${props => props.priority === 3 &&`
+        background-color: ${priorityColors[3]}
+    `}
+    ${props => props.priority === 4 &&`
+        background-color: ${priorityColors[4]}
+    `}
+    ${props => props.priority === 5 &&`
+        background-color: ${priorityColors[5]}
+    `}
+
+`
+
+export const CardContent = styled.View`
+    margin: 18px 20px;
+`
+
+export const StyledAdd = styled.View`
+    margin: 50px;
+    background-color: ${accent};
+    padding: 10px;
+    border-radius: 10px;
+    align-self: flex-end;
 `

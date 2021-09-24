@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
         <StatusBar style="dark" />
         <InnerContainer>
           <PageLogo source={require('./../assets/login.png')} />
-          <PageTitle>Login App</PageTitle>
+          <PageTitle>Mikellino's App</PageTitle>
           <SubTitle>Account Login</SubTitle>
           <LoginForm navigation={navigation} />
         </InnerContainer>
