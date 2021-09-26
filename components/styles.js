@@ -189,7 +189,7 @@ export const TextLinkContent = styled.Text`
 export const TaskCard = styled.View`
     border-radius: 7px;
     color: ${contrastAccent};
-    margin: 100px 4px;
+    margin: 15px 4px;
     ${props => props.priority === 1 &&`
         background-color: ${secondary}
     `}

@@ -17,13 +17,14 @@ import {
 import { FontAwesome5, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { Colors } from './styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { sortArray } from '../shared/sharedFunctions';
 
-const { grey, primary } = Colors
+const { grey, primary, contrastAccent } = Colors
 
 export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
     const dayjs = require('dayjs')
     const [show, setShow] = useState(false);
-    const [date, setDate] = useState(dayjs())
+    const [date, setDate] = useState(new Date())
 
   const path = `${url}task/`;
 
@@ -37,9 +38,9 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
     const req = { ...values, creator: creator };
     try {
       const response = await axios.post(path, req);
-      const { status, data } = response.data;
+      const { status, data } = response;
       if (status === 200) {
-        setListOfTasks((prevState) => [...prevState, data]);
+        setListOfTasks(prevState => sortArray(prevState, data));
         setSubmitting(false);
         setModalOpen(false);
       }
@@ -51,25 +52,28 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
 
   return (
     <View style={{flex: 1, padding: 20}}>
-        {show && (
-            <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-            />
-        )}
+      {show && (
+        <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+        />
+      )}
       <Formik
         initialValues={{
           title: '',
           category: '',
-          priority: 1,
+          priority: '',
           endDate: '',
         }}
         validationSchema={TaskSchema}
-        onSubmit={(values, { setSubmitting }) => handleTaskSubmission(values, setSubmitting)}
+        onSubmit={(values, { setSubmitting }) => {
+          values = {...values, endDate: date}
+          handleTaskSubmission(values, setSubmitting)
+        }}
       >
         {props => (
           <StyledFormArea style={{width: '100%'}}>
@@ -133,7 +137,8 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
                   placeholderTextColor={grey}
                   onChangeText={props.handleChange('endDate')}
                   onBlur={props.handleBlur('endDate')}
-                  value={dayjs(date).format('DD-MM-YYYY')}
+                  value={date.toLocaleDateString()}
+                  editable={false}
                 />
               </TouchableOpacity>
               {(props.touched.endDate && Boolean(props.errors.endDate)) && 

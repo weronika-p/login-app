@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 import axios from 'axios';
 import { url } from '../constants/constants'
 import { FlatList, TouchableOpacity, View, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ExtraView, ExtraText, SubTitle, InnerContainer } from '../components/styles';
+import { ExtraView, ExtraText, SubTitle, InnerContainer, StyledContainer } from '../components/styles';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../components/styles';
@@ -29,8 +29,6 @@ export default function TasksList({ navigation, route }) {
             if(status === 200) {
                 const fetchedTasks = data
                 return setListOfTasks(fetchedTasks)
-            } else {
-                return setMessage(data)
             }
         } catch (error) {
             return setMessage(error)
@@ -50,7 +48,7 @@ export default function TasksList({ navigation, route }) {
         return (
             <>
                 <StatusBar style='dark' />
-                <InnerContainer style={{backgroundColor: '#cee6f6'}}>
+                <StyledContainer>
                     <Modal visible={modalOpen} animationType='slide'>
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <View style={{flex: 1, backgroundColor: tertiary}}>
@@ -66,19 +64,21 @@ export default function TasksList({ navigation, route }) {
                     </Modal>
                     {listOfTasks.length > 0 
                         ? (
-                            <FlatList
-                                data={listOfTasks}
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => navigation.navigate('TaskDetail', item)}>
-                                        <Card priority={item.priority}>
-                                            <SubTitle style={{color: '#fff'}}>{item.title}</SubTitle>
-                                        </Card>
-                                    </TouchableOpacity>
-                                )}
-                                keyExtractor={item => {
-                                    return item._id.toString()}
-                                }
-                            />
+                            <View>
+                                <FlatList
+                                    data={listOfTasks}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => navigation.navigate('TaskDetail', item)}>
+                                            <Card priority={item.priority}>
+                                                <SubTitle style={{color: '#fff'}}>{item.title}</SubTitle>
+                                            </Card>
+                                        </TouchableOpacity>
+                                    )}
+                                    keyExtractor={item => {
+                                        return item._id.toString()}
+                                    }
+                                />
+                            </View>
                         )
                         : (
                             <ExtraView>
@@ -92,12 +92,7 @@ export default function TasksList({ navigation, route }) {
                         style={styles.modalToggle}
                         onPress={() => setModalOpen(true)}
                     />
-                    {/* {message && (
-                        <ExtraView>
-                            <ExtraText>{message}</ExtraText>
-                        </ExtraView>
-                    )} */}
-                </InnerContainer>
+                </StyledContainer>
             </>
         )
     }    

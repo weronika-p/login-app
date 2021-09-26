@@ -14,5 +14,4 @@ export const TaskSchema = yup.object({
         .lessThan(5, 'Priority needs to be lower than 6'),
     endDate: yup
         .string()
-        .required('Due date is required')
 })
