@@ -219,3 +219,23 @@ export const StyledAdd = styled.View`
     border-radius: 10px;
     align-self: flex-end;
 `
+
+export const StyledLeftAction = styled.View`
+    background-color: ${accent};
+    justify-content: flex-start;
+    flex: 1;
+    border-radius: 7px;
+    margin: 15px 4px;
+    align-items: center;
+    flex-direction: row;
+`
+
+export const StyledRightAction = styled.View`
+    background-color: ${accent};
+    justify-content: flex-end;
+    flex: 1;
+    border-radius: 7px;
+    margin: 15px 4px;
+    align-items: center;
+    flex-direction: row;
+`

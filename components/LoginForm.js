@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Formik } from 'formik';
 import { View, ActivityIndicator } from 'react-native';
 import {
@@ -21,6 +21,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as Google from 'expo-google-app-auth'
 import { url } from '../constants/constants';
+import { AuthContext } from '../context/auth-context';
 
 const { grey, primary, contrastAccent } = Colors;
 
@@ -29,6 +30,8 @@ export default function LoginForm({ navigation }) {
   const [message, setMessage] = useState()
   const [messageType, setMessageType] = useState()
   const [googleSubmitting, setGoogleSubmitting] = useState(false)
+  
+  const authContext = useContext(AuthContext)
 
   const handleLogin = (credentials, setSubmitting) => {
     handleMessage(null)
@@ -43,6 +46,7 @@ export default function LoginForm({ navigation }) {
         if(status !== 'SUCCESS') {
           handleMessage(message, status)
         } else {
+          authContext.login(credentials.email)
           navigation.navigate('Welcome', {...data[0]})
         }
         setSubmitting(false)

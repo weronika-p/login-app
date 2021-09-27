@@ -4,11 +4,14 @@ import AppLoading from 'expo-app-loading';
 import axios from 'axios';
 import { url } from '../constants/constants'
 import { FlatList, TouchableOpacity, View, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ExtraView, ExtraText, SubTitle, InnerContainer, StyledContainer } from '../components/styles';
+import { ExtraView, ExtraText, SubTitle, InnerContainer, StyledContainer, RighttIcon } from '../components/styles';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../components/styles';
 import TaskForm from '../components/AddTask';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { LeftAction, RightAction } from '../components/SwipeActions';
+import { deleteTask } from '../shared/sharedFunctions';
 
 const { accent, contrastAccent, tertiary } = Colors
 
@@ -68,11 +71,18 @@ export default function TasksList({ navigation, route }) {
                                 <FlatList
                                     data={listOfTasks}
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => navigation.navigate('TaskDetail', item)}>
+                                        <Swipeable
+                                            renderLeftActions={LeftAction}
+                                            leftThreshold={80}
+                                            onSwipeableLeftOpen={() => navigation.navigate('EditTask', item)}
+                                            renderRightActions={RightAction}
+                                            rightThreshold={41}
+                                            onSwipeableRightOpen={() => deleteTask(item._id, setListOfTasks)}
+                                        >
                                             <Card priority={item.priority}>
-                                                <SubTitle style={{color: '#fff'}}>{item.title}</SubTitle>
+                                                <SubTitle style={{color: contrastAccent}}>{item.title}</SubTitle>
                                             </Card>
-                                        </TouchableOpacity>
+                                        </Swipeable>
                                     )}
                                     keyExtractor={item => {
                                         return item._id.toString()}

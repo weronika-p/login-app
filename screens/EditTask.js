@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Formik } from 'formik';
-import { TaskSchema } from './TaskSchema';
+import { TaskSchema } from '../components/TaskSchema';
 import { url } from '../constants/constants';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { sortArray } from '../shared/sharedFunctions';
-import FormLayout from './Form';
+import FormLayout from '../components/Form';
+import SuccessAlert from '../components/Alert';
+import { StyledContainer } from '../components/styles';
 
-export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
+export default function TaskForm({ navigation, route }) {
+    const { _id, title, category, priority, endDate } = route.params
+    const localeDate = endDate.toLocaleString()
   const [show, setShow] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date(localeDate));
 
-  const path = `${url}task/`;
+  const id = _id.toString()
+  const path = `${url}task/${id}`;
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -20,15 +24,13 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
     setDate(currentDate);
   };
 
-  const handleTaskSubmission = async (values, setSubmitting) => {
-    const req = { ...values, creator: creator };
+  const handleTaskEditting = async (values, setSubmitting) => {
     try {
-      const response = await axios.post(path, req);
-      const { status, data } = response;
+      const response = await axios.post(path, values);
+      const { status } = response;
       if (status === 200) {
-        setListOfTasks((prevState) => sortArray(prevState, data));
         setSubmitting(false);
-        setModalOpen(false);
+        <SuccessAlert navigation={navigation} />
       }
     } catch (error) {
       setSubmitting(false);
@@ -37,7 +39,7 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <StyledContainer>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -50,19 +52,19 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
       )}
       <Formik
         initialValues={{
-          title: '',
-          category: '',
-          priority: '',
-          endDate: '',
+          title: title,
+          category: category,
+          priority: priority,
+          endDate: date.toLocaleString(),
         }}
         validationSchema={TaskSchema}
         onSubmit={(values, { setSubmitting }) => {
           values = { ...values, endDate: date };
-          handleTaskSubmission(values, setSubmitting);
+          handleTaskEditting(values, setSubmitting);
         }}
       >
-        {(props) => <FormLayout props={props} setShow={setShow} date={date} buttonText={'Add a task'} />}
+        {(props) => <FormLayout props={props} setShow={setShow} date={date} buttonText={'Update the task'}/>}
       </Formik>
-    </View>
+    </StyledContainer>
   );
 }

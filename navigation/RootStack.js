@@ -6,6 +6,7 @@ import SignUp from "../screens/Signup";
 import Welcome from "../screens/Welcome";
 import TasksList from "../screens/TasksList";
 import TaskItem from "../screens/TaskItem";
+import EditTask from "../screens/EditTask";
 
 const Stack = createNativeStackNavigator()
 
@@ -31,6 +32,7 @@ const RootStack = () => {
                 <Stack.Screen name="Welcome" component={Welcome} />
                 <Stack.Screen name="TasksList" component={TasksList} />
                 <Stack.Screen name="TaskDetail" component={TaskItem} />
+                <Stack.Screen name="EditTask" component={EditTask} />
             </Stack.Navigator>
         </NavigationContainer>
     )
