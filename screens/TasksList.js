@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import axios from 'axios';
@@ -22,6 +22,11 @@ export default function TasksList({ navigation, route }) {
     const [modalOpen, setModalOpen] = useState(false)
 
     const path = `${url}task/list`
+    const swipeableRef = useRef(null)
+
+    const closeSwipeable = () => {
+        swipeableRef.current.close();
+    }
 
     async function fetchData() {
         try {
@@ -72,9 +77,13 @@ export default function TasksList({ navigation, route }) {
                                     data={listOfTasks}
                                     renderItem={({ item }) => (
                                         <Swipeable
+                                            ref={swipeableRef}
                                             renderLeftActions={LeftAction}
                                             leftThreshold={80}
-                                            onSwipeableLeftOpen={() => navigation.navigate('EditTask', item)}
+                                            onSwipeableLeftOpen={() => {
+                                                navigation.navigate('EditTask', item)
+                                                closeSwipeable()
+                                            }}
                                             renderRightActions={RightAction}
                                             rightThreshold={41}
                                             onSwipeableRightOpen={() => deleteTask(item._id, setListOfTasks)}

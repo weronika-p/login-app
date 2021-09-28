@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { View } from 'react-native';
 import { Formik } from 'formik';
 import { TaskSchema } from '../components/TaskSchema';
 import { url } from '../constants/constants';
@@ -17,7 +16,6 @@ export default function TaskForm({ navigation, route }) {
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(localeDate));
-  const [showAlert, setShowAlert] = useState(false)
 
   const id = _id.toString()
   const path = `${url}task/${id}`;
