@@ -15,7 +15,6 @@ import { Colors } from './styles';
 const { grey, primary, contrastAccent } = Colors;
 
 export default function FormLayout({ props, setShow, date, buttonText }) {
-    console.log(props.values.priority)
   return (
     <StyledFormArea style={{ width: '100%', paddingTop: 10 }}>
       <View>
@@ -56,7 +55,7 @@ export default function FormLayout({ props, setShow, date, buttonText }) {
           placeholderTextColor={grey}
           onChangeText={props.handleChange('priority')}
           onBlur={props.handleBlur('priority')}
-          value={props.values.priority}
+          value={props.values.priority.toString()}
           keyboardType="numeric"
         />
         {props.touched.priority && Boolean(props.errors.priority) && <MessageBox>{props.errors.priority}</MessageBox>}

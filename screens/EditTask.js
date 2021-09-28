@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View } from 'react-native';
 import { Formik } from 'formik';
 import { TaskSchema } from '../components/TaskSchema';
@@ -6,14 +6,18 @@ import { url } from '../constants/constants';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FormLayout from '../components/Form';
-import SuccessAlert from '../components/Alert';
+import successAlert from '../components/Alert';
 import { StyledContainer } from '../components/styles';
+import { AuthContext } from '../context/auth-context';
 
 export default function TaskForm({ navigation, route }) {
     const { _id, title, category, priority, endDate } = route.params
     const localeDate = endDate.toLocaleString()
+    const authContext = useContext(AuthContext)
+
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(localeDate));
+  const [showAlert, setShowAlert] = useState(false)
 
   const id = _id.toString()
   const path = `${url}task/${id}`;
@@ -26,11 +30,11 @@ export default function TaskForm({ navigation, route }) {
 
   const handleTaskEditting = async (values, setSubmitting) => {
     try {
-      const response = await axios.post(path, values);
+      const response = await axios.patch(path, values);
       const { status } = response;
       if (status === 200) {
         setSubmitting(false);
-        <SuccessAlert navigation={navigation} />
+        successAlert(navigation, authContext.email)
       }
     } catch (error) {
       setSubmitting(false);
@@ -59,7 +63,7 @@ export default function TaskForm({ navigation, route }) {
         }}
         validationSchema={TaskSchema}
         onSubmit={(values, { setSubmitting }) => {
-          values = { ...values, endDate: date };
+          values = { ...values, priority: +values.priority, endDate: date };
           handleTaskEditting(values, setSubmitting);
         }}
       >

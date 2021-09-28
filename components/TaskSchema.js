@@ -8,10 +8,9 @@ export const TaskSchema = yup.object({
         .string()
         .required('Category is required'),
     priority: yup
-        .number()
+        .string()
         .required('Priority is required')
-        .moreThan(1, 'Priority needs to be higher than 0')
-        .lessThan(5, 'Priority needs to be lower than 6'),
+        .matches(/^[1-5]{1}$/, 'Priority needs to be a number from 1 to 5'),
     endDate: yup
         .string()
 })
