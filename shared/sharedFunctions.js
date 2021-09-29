@@ -20,10 +20,8 @@ const deleteItem = (array, deletedId) => {
 export const deleteTask = async (itemID, setListOfTasks) => {
     const id = itemID.toString()
     const path = `${url}task/delete/${id}`
-    console.log(id, path)
    try {
        const response = await axios.delete(path)
-       console.log(response)
        if(response.status === 200) {
            setListOfTasks(prevState => deleteItem(prevState, id))
        }

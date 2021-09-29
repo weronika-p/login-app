@@ -30,7 +30,7 @@ const Welcome = ({ navigation, route }) => {
             <StyledButton onPress={() => navigation.navigate('TasksList', email)}>
               <ButtonText>Tasks List</ButtonText>
             </StyledButton>
-            <StyledButton onPress={() => navigation.navigate('Calendar', email)}>
+            <StyledButton onPress={() => navigation.navigate('Calendar', name)}>
               <ButtonText>Calendar</ButtonText>
             </StyledButton>
             <StyledButton onPress={() => navigation.navigate('Login')}>

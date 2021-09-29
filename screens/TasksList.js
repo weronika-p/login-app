@@ -1,19 +1,23 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import axios from 'axios';
 import { url } from '../constants/constants'
-import { FlatList, TouchableOpacity, View, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ExtraView, ExtraText, SubTitle, InnerContainer, StyledContainer, RighttIcon } from '../components/styles';
+import { FlatList, View, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Animated } from 'react-native';
+import { SubTitle, StyledContainer, WelcomeImage } from '../components/styles';
 import Card from '../components/Card';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Colors } from '../components/styles';
 import TaskForm from '../components/AddTask';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { LeftAction, RightAction } from '../components/SwipeActions';
 import { deleteTask } from '../shared/sharedFunctions';
+import * as Calendar from 'expo-calendar';
+import { AuthContext } from '../context/auth-context';
+import Frog from '../components/AnimatedFrog';
 
 const { accent, contrastAccent, tertiary } = Colors
+const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5)
 
 export default function TasksList({ navigation, route }) {
     const [listOfTasks, setListOfTasks] = useState([])
@@ -23,9 +27,17 @@ export default function TasksList({ navigation, route }) {
 
     const path = `${url}task/list`
     const swipeableRef = useRef(null)
+    const calendarContext = useContext(AuthContext)
 
     const closeSwipeable = () => {
         swipeableRef.current.close();
+    }
+
+    const getEventId = async (date) => {
+        const events = await Calendar.getEventsAsync(['11'], date, date)
+        const eventId = events[0].id
+        console.log(events, eventId)
+        return Calendar.openEventInCalendar(eventId)
     }
 
     async function fetchData() {
@@ -88,9 +100,12 @@ export default function TasksList({ navigation, route }) {
                                             rightThreshold={41}
                                             onSwipeableRightOpen={() => deleteTask(item._id, setListOfTasks)}
                                         >
-                                            <Card priority={item.priority}>
-                                                <SubTitle style={{color: contrastAccent}}>{item.title}</SubTitle>
-                                            </Card>
+                                            <TouchableOpacity onPress={() => getEventId(new Date(item.endDate))}>
+                                                <Card priority={item.priority}>
+                                                    <SubTitle style={{color: contrastAccent}}>{item.title}</SubTitle>
+                                                    {item.priority === 1 && <Frog />}
+                                                </Card>
+                                            </TouchableOpacity>
                                         </Swipeable>
                                     )}
                                     keyExtractor={item => {
@@ -100,9 +115,10 @@ export default function TasksList({ navigation, route }) {
                             </View>
                         )
                         : (
-                            <ExtraView>
-                                <ExtraText style={{marginVertical: 100}}>You don't have any tasks :) </ExtraText>
-                            </ExtraView>
+                            <>
+                                <WelcomeImage source={require('./../assets/rest.png')} style={{marginTop: 10}} />
+                                <SubTitle style={{marginTop: 20, textAlign: 'center'}}>You don't have any tasks :)</SubTitle>
+                            </>
                         )
                     }
                     <Ionicons 
