@@ -46,7 +46,7 @@ export default function LoginForm({ navigation }) {
         if(status !== 'SUCCESS') {
           handleMessage(message, status)
         } else {
-          authContext.login(credentials.email)
+          authContext.login(credentials.email, data[0].name)
           navigation.navigate('Welcome', {...data[0]})
         }
         setSubmitting(false)

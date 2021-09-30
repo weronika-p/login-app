@@ -6,14 +6,17 @@ import { AuthContext } from './context/auth-context';
 
 export default function App() {
   const [email, setEmail] = useState('');
-  const [calendarId, setCalendarId] = useState('1');
+  const [calendarId, setCalendarId] = useState('');
+  const [name, setName] = useState('')
 
-  const login = (email) => {
+  const login = (email, name) => {
     setEmail(email);
+    setName(name)
   };
 
   const logout = () => {
     setEmail('');
+    setName('')
   };
 
   const saveCalendarId = id => {
@@ -23,7 +26,7 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthContext.Provider
-        value={{ email: email, login: login, logout: logout, calendarId: calendarId, saveCalendarId: saveCalendarId }}
+        value={{ email: email, login: login, logout: logout, calendarId: calendarId, saveCalendarId: saveCalendarId, name: name }}
       >
         <RootStack />
       </AuthContext.Provider>

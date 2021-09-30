@@ -8,6 +8,8 @@ import FormLayout from '../components/Form';
 import successAlert from '../components/Alert';
 import { StyledContainer } from '../components/styles';
 import { AuthContext } from '../context/auth-context';
+import { getEventId } from '../shared/sharedFunctions';
+import * as Calendar from 'expo-calendar';
 
 export default function TaskForm({ navigation, route }) {
     const { _id, title, category, priority, endDate } = route.params
@@ -16,6 +18,7 @@ export default function TaskForm({ navigation, route }) {
 
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(localeDate));
+  
 
   const id = _id.toString()
   const path = `${url}task/${id}`;
@@ -31,8 +34,17 @@ export default function TaskForm({ navigation, route }) {
       const response = await axios.patch(path, values);
       const { status } = response;
       if (status === 200) {
+        console.log(new Date(endDate), endDate)
+        const eventId = await getEventId(authContext, new Date(endDate))
+        eventId
+        ? await Calendar.updateEventAsync(eventId, {
+          title: values.title,
+          startDate: values.endDate,
+          endDate: values.endDate
+        })
+        : console.log('We could not find an event')
         setSubmitting(false);
-        successAlert(navigation, authContext.email)
+        successAlert(navigation, authContext.email, 'Task has just been updated successfuly')
       }
     } catch (error) {
       setSubmitting(false);

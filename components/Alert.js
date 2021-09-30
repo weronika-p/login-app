@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
 import { Alert } from "react-native";
 
-const successAlert = (navigation, email) => {
+const successAlert = (navigation, email, text) => {
     Alert.alert(
         'SUCCESS!',
-        'Task has just been updated successfuly',
+        text,
         [{
-            text: 'Back to Task List',
-            onPress: () => navigation.navigate('TasksList', email)
+            text: 'Back to Welcome page',
+            onPress: () => navigation.navigate('Welcome', email)
         }],
         { cancelable: false }
     )

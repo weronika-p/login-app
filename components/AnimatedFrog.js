@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
-import { StyledLeftAction, StyledRightAction, Colors } from "./styles"
-import { Animated, Easing, StyleSheet } from "react-native"
+import { Colors } from "./styles"
+import { Animated, Easing } from "react-native"
 import { FontAwesome5 } from '@expo/vector-icons'
 
 const AnimatedIcon = Animated.createAnimatedComponent(FontAwesome5);

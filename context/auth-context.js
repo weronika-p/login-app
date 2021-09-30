@@ -5,5 +5,6 @@ export const AuthContext = React.createContext({
     login: () => {},
     logout: () => {},
     calendarId: '',
-    saveCalendarId: () => {}
+    saveCalendarId: () => {},
+    name: ''
 })

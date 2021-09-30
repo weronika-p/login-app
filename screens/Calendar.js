@@ -1,19 +1,38 @@
 import React, { useEffect, useContext } from 'react';
-import { Text, Button, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import * as Calendar from 'expo-calendar';
-import { StyledContainer } from '../components/styles';
+import { ButtonText, StyledButton, StyledContainer } from '../components/styles';
 import { AuthContext } from '../context/auth-context';
+import { url } from '../constants/constants';
+import axios from 'axios';
+import successAlert from '../components/Alert';
 
 export default function CalendarView({ navigation, route }) {
-    console.log(route.params)
     const context = useContext(AuthContext)
-    console.log(context.calendarId, context.email)
 
     async function getDefaultCalendarSource() {
         const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
         const defaultCalendars = calendars.filter(each => each.source.name === 'Default');
         return defaultCalendars[0].source;
+    }
+
+    const handleCalendar = async calendarId => {
+      const path = `${url}calendar/`
+      const data = {
+        title: 'To Do Calendar',
+        creator: context.email,
+        calendarId: calendarId
       }
+      try {
+        const response = await axios.post(path, data)
+        const result = response.data
+        if(result.status === 200) {
+          successAlert(navigation, context.email, 'Calendar has just been created successfuly')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
       
     async function createCalendar() {
         const defaultCalendarSource =
@@ -30,9 +49,8 @@ export default function CalendarView({ navigation, route }) {
           ownerAccount: 'personal',
           accessLevel: Calendar.CalendarAccessLevel.OWNER,
         });
-        console.log(newCalendarID)
         context.saveCalendarId(newCalendarID)
-        console.log(context.calendarId)
+        handleCalendar(newCalendarID)
     }
 
   useEffect(() => {
@@ -46,9 +64,9 @@ export default function CalendarView({ navigation, route }) {
 
   return (
     <StyledContainer>
-      <Text>Calendar Module Example</Text>
-      <Button title="Create a new calendar" onPress={createCalendar} />
-      <Button title="Delete calendar" onPress={async() => await Calendar.deleteCalendarAsync('11')} />
+      <StyledButton onPress={createCalendar} style={{marginTop: 30}}>
+        <ButtonText>Create a new calendar</ButtonText>
+      </StyledButton>
     </StyledContainer>
   );
 }

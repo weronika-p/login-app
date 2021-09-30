@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   InnerContainer,
   PageTitle,
@@ -12,9 +12,11 @@ import {
   StyledFormArea
 } from '../components/styles';
 import { StatusBar } from 'expo-status-bar';
+import { AuthContext } from '../context/auth-context';
 
 const Welcome = ({ navigation, route }) => {
-  const { name, email, photoUrl } = route.params
+  const authContext = useContext(AuthContext)
+  const { photoUrl } = route.params
   const AvatarImg = photoUrl ? {url: photoUrl} : require('./../assets/avatar.png')
   return (
     <>
@@ -23,18 +25,24 @@ const Welcome = ({ navigation, route }) => {
         <WelcomeImage source={require('./../assets/1200.png')} />
         <WelcomeContainer>
           <PageTitle welcome={true}>Welcome!</PageTitle>
-          <SubTitle welcome={true}>{name || 'Mikello'}</SubTitle>
+          <SubTitle welcome={true}>{authContext.name || 'Mikello'}</SubTitle>
           <StyledFormArea>
             <Avatar source={AvatarImg} />
             <Line />
-            <StyledButton onPress={() => navigation.navigate('TasksList', email)}>
+            <StyledButton onPress={() => navigation.navigate('TasksList', authContext.email)}>
               <ButtonText>Tasks List</ButtonText>
             </StyledButton>
-            <StyledButton onPress={() => navigation.navigate('Calendar', name)}>
+            <StyledButton onPress={() => navigation.navigate('Calendar', authContext.name)}>
               <ButtonText>Calendar</ButtonText>
             </StyledButton>
-            <StyledButton onPress={() => navigation.navigate('Login')}>
+            <StyledButton onPress={() => {
+              authContext.logout()
+              navigation.navigate('Login')
+            }}>
               <ButtonText>Logout</ButtonText>
+            </StyledButton>
+            <StyledButton onPress={() => navigation.navigate('AboutMe')}>
+              <ButtonText>About Me</ButtonText>
             </StyledButton>
           </StyledFormArea>
         </WelcomeContainer>

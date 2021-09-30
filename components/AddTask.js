@@ -9,6 +9,7 @@ import { sortArray } from '../shared/sharedFunctions';
 import FormLayout from './Form';
 import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
+import { fetchCalendarId } from '../shared/sharedFunctions';
 
 export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
   const [show, setShow] = useState(false);
@@ -16,6 +17,7 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
 
   const path = `${url}task/`;
   const calendarContext = useContext(AuthContext)
+  const { email, calendarId, saveCalendarId  } = calendarContext
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -40,7 +42,10 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
             }
           ]
         }
-        await Calendar.createEventAsync(calendarContext.calendarId, newTask)
+        const idCalendar = calendarId
+        ? calendarId
+        : await fetchCalendarId(email, saveCalendarId)
+        await Calendar.createEventAsync(idCalendar, newTask)
         setSubmitting(false);
         setModalOpen(false);
       }

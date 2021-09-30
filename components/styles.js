@@ -40,7 +40,7 @@ export const InnerContainer = styled.View`
 
 export const WelcomeContainer = styled(InnerContainer)`
     padding: 25px;
-    padding-top: 10px;
+    padding-top: 5px;
     justify-content: center;
 `
 
@@ -58,7 +58,8 @@ export const Avatar = styled.Image`
 `
 
 export const WelcomeImage = styled.Image`
-    height: 40%;
+    margin-top: 40px;
+    height: 30%;
     width: 100%;
 `
 
@@ -210,6 +211,8 @@ export const TaskCard = styled.View`
 
 export const CardContent = styled.View`
     margin: 18px 20px;
+    flex-direction: row;
+    justify-content: space-between;
 `
 
 export const StyledAdd = styled.View`
