@@ -1,11 +1,13 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { ButtonText, ExtraView, StyledButton } from './styles';
+import { ButtonText, ExtraView, FilterButton, StyledButton } from './styles';
 import { AuthContext } from '../context/auth-context';
+import { Colors } from './styles';
+
+const { accent } = Colors;
 
 export default function Filters({ setModalOpen }) {
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const { listOfTasks, setFilteredList } = useContext(AuthContext);
+  const { listOfTasks, setFilteredList, selectedFilters, setSelectedFilters } = useContext(AuthContext);
 
   const handleFilteringList = (listOfTasks, selectedFilters) => {
     return listOfTasks.filter((task) => {
@@ -19,13 +21,21 @@ export default function Filters({ setModalOpen }) {
   };
 
   const clearFilters = () => {
-      setFilteredList([])
-      setSelectedFilters([])
-  }
+    setFilteredList([]);
+    setSelectedFilters([]);
+  };
 
-  const selectButton = category => {
-      setSelectedFilters(prevState => [...prevState, category])
-  }
+  const selectButton = (category) => {
+    if (selectedFilters.some((filter) => filter === category)) {
+      setSelectedFilters((prevState) =>
+        [...prevState].filter((prev) => {
+          prev !== category;
+        }),
+      );
+    } else {
+      setSelectedFilters((prevState) => [...prevState, category]);
+    }
+  };
 
   const allCategories = listOfTasks.reduce((list, task) => {
     return [...list, task.category];
@@ -38,13 +48,17 @@ export default function Filters({ setModalOpen }) {
       <View>
         {categories.map((category, index) => {
           return (
-            <StyledButton key={index} onPress={() => selectButton(category)}>
+            <FilterButton
+              key={index}
+              selected={selectedFilters.some((filter) => filter === category)}
+              onPress={() => selectButton(category)}
+            >
               <ButtonText>{category}</ButtonText>
-            </StyledButton>
+            </FilterButton>
           );
         })}
       </View>
-      <ExtraView style={{justifyContent: 'space-between'}}>
+      <ExtraView style={{ justifyContent: 'space-between' }}>
         <StyledButton onPress={() => applyFilters()}>
           <ButtonText>Apply filters</ButtonText>
         </StyledButton>

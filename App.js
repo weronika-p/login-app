@@ -10,6 +10,7 @@ export default function App() {
   const [name, setName] = useState('');
   const [listOfTasks, setListOfTasks] = useState([]);
   const [filteredList, setFilters] = useState([])
+  const [selectedFilters, setChosenFilters] = useState([])
 
   const login = (email, name) => {
     setEmail(email);
@@ -33,6 +34,10 @@ export default function App() {
     setFilters(filteredList)
   }
 
+  const setSelectedFilters = selectedFilters => {
+    setChosenFilters(selectedFilters)
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthContext.Provider
@@ -46,7 +51,9 @@ export default function App() {
           listOfTasks: listOfTasks,
           updateTasks: updateTasks,
           filteredList: filteredList,
-          setFilteredList: setFilteredList
+          setFilteredList: setFilteredList,
+          selectedFilters: selectedFilters,
+          setSelectedFilters: setSelectedFilters
         }}
       >
         <RootStack />

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { View, Image, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Image, Text, TextInput, TouchableOpacity, Pressable } from "react-native";
 import Constants from "expo-constants";
 
 const StatusBarHeight = Constants.statusBarHeight;
@@ -13,10 +13,9 @@ export const Colors = {
     grey: "#474747",
     google: "#4285F4",
     error: "#DB4437",
-    lightAccent: '#FFD2EA'
 }
 
-const {primary, secondary, tertiary, accent, contrastAccent, google, error, lightAccent} = Colors
+const {primary, secondary, tertiary, accent, contrastAccent, google, error } = Colors
 
 const priorityColors = {
     1: secondary,
@@ -146,8 +145,12 @@ export const StyledButton = styled.TouchableOpacity`
         flex-direction: row;
         justify-content: center;
     `}
-    ${props => props.notSelected == true && `
-        background-color: ${lightAccent}
+`
+
+export const FilterButton = styled(StyledButton)`
+    background-color: ${primary}
+    ${props => props.selected == true && `
+        background-color: ${accent}
     `}
 `
 

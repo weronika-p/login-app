@@ -10,5 +10,7 @@ export const AuthContext = React.createContext({
     listOfTasks: [],
     updateTasks: () => {},
     filteredList: [],
-    setFilteredList: () => {}
+    setFilteredList: () => {},
+    selectedFilters: [],
+    setSelectedFilters: () => {}
 })
