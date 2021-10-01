@@ -63,6 +63,12 @@ export const WelcomeImage = styled.Image`
     width: 100%;
 `
 
+export const AboutMeImage = styled.Image`
+    margin-top: 40px;
+    height: 52%;
+    width: 100%;
+`
+
 export const PageTitle = styled.Text`
     font-size: 30px;
     text-align: center;

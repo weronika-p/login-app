@@ -31,9 +31,7 @@ export const getEventId = async (calendarContext, date) => {
     const calendarId = calendarContext.calendarId
       ? calendarContext.calendarId
       : await fetchCalendarId(calendarContext.email, calendarContext.saveCalendarId);
-    console.log(calendarId)
     const events = await Calendar.getEventsAsync([calendarId], date, date);
-    console.log(date, events, typeof date)
     const eventId = events[0].id;
     return eventId
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { Platform } from 'react-native';
 import * as Calendar from 'expo-calendar';
-import { ButtonText, StyledButton, StyledContainer } from '../components/styles';
+import { ButtonText, StyledButton, StyledContainer, SubTitle } from '../components/styles';
 import { AuthContext } from '../context/auth-context';
 import { url } from '../constants/constants';
 import axios from 'axios';
@@ -67,6 +67,7 @@ export default function CalendarView({ navigation, route }) {
       <StyledButton onPress={createCalendar} style={{marginTop: 30}}>
         <ButtonText>Create a new calendar</ButtonText>
       </StyledButton>
+      <SubTitle>If you already have a calendar don't click above button</SubTitle>
     </StyledContainer>
   );
 }

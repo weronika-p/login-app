@@ -34,7 +34,6 @@ export default function TaskForm({ navigation, route }) {
       const response = await axios.patch(path, values);
       const { status } = response;
       if (status === 200) {
-        console.log(new Date(endDate), endDate)
         const eventId = await getEventId(authContext, new Date(endDate))
         eventId
         ? await Calendar.updateEventAsync(eventId, {
