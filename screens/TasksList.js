@@ -76,7 +76,7 @@ export default function TasksList({ navigation, route }) {
             </TouchableWithoutFeedback>
           </Modal>
           {listOfTasks.length > 0 ? (
-            <View>
+            <View style={{flex: 1}}>
               <FlatList
                 data={listOfTasks}
                 renderItem={({ item }) => (

@@ -1,6 +1,7 @@
 import axios from "axios"
 import { url } from "../constants/constants"
 import * as Calendar from 'expo-calendar';
+import { Audio } from 'expo-av'
 
 export const sortArray = (array, newItem) => {
     const newArray = [...array, newItem]
@@ -44,6 +45,15 @@ const deleteItem = (array, deletedId) => {
     return updatedArray
 }
 
+async function playSound() {
+    try {
+        const { sound } = await Audio.Sound.createAsync(require('../assets/swish.mp3'))
+        await sound.playAsync()    
+    } catch (error) {
+        console.log(error)
+    }   
+}
+
 export const deleteTask = async (itemID, setListOfTasks, calendarContext, date) => {
     const id = itemID.toString()
     const path = `${url}task/delete/${id}`
@@ -52,11 +62,11 @@ export const deleteTask = async (itemID, setListOfTasks, calendarContext, date) 
        if(response.status === 200) {
            const eventId = await getEventId(calendarContext, date)
            if (eventId) {
-            console.log(eventId)
            await Calendar.deleteEventAsync(eventId)
            } else {
             console.log('We could not find a task')
            }
+           playSound()
            setListOfTasks(prevState => deleteItem(prevState, id))
        }
    } catch (error) {
