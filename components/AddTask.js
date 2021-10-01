@@ -11,13 +11,13 @@ import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
 import { fetchCalendarId } from '../shared/sharedFunctions';
 
-export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
+export default function TaskForm({ setModalOpen }) {
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
 
   const path = `${url}task/`;
   const calendarContext = useContext(AuthContext)
-  const { email, calendarId, saveCalendarId  } = calendarContext
+  const { email, calendarId, saveCalendarId, updateTasks  } = calendarContext
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -26,12 +26,12 @@ export default function TaskForm({ setModalOpen, creator, setListOfTasks }) {
   };
 
   const handleTaskSubmission = async (values, setSubmitting) => {
-    const req = { ...values, creator: creator };
+    const req = { ...values, creator: email };
     try {
       const response = await axios.post(path, req);
       const { status, data } = response;
       if (status === 200) {
-        setListOfTasks((prevState) => sortArray(prevState, data));
+        updateTasks((prevState) => sortArray(prevState, data));
         const newTask = {
           title: data.title,
           startDate: data.endDate,

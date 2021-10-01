@@ -54,20 +54,20 @@ async function playSound() {
     }   
 }
 
-export const deleteTask = async (itemID, setListOfTasks, calendarContext, date) => {
+export const deleteTask = async (itemID, context, date) => {
     const id = itemID.toString()
     const path = `${url}task/delete/${id}`
    try {
        const response = await axios.delete(path)
        if(response.status === 200) {
-           const eventId = await getEventId(calendarContext, date)
+           const eventId = await getEventId(context, date)
            if (eventId) {
            await Calendar.deleteEventAsync(eventId)
            } else {
             console.log('We could not find a task')
            }
            playSound()
-           setListOfTasks(prevState => deleteItem(prevState, id))
+           context.updateTasks(prevState => deleteItem(prevState, id))
        }
    } catch (error) {
     console.log(error)

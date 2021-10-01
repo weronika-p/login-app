@@ -7,26 +7,47 @@ import { AuthContext } from './context/auth-context';
 export default function App() {
   const [email, setEmail] = useState('');
   const [calendarId, setCalendarId] = useState('');
-  const [name, setName] = useState('')
+  const [name, setName] = useState('');
+  const [listOfTasks, setListOfTasks] = useState([]);
+  const [filteredList, setFilters] = useState([])
 
   const login = (email, name) => {
     setEmail(email);
-    setName(name)
+    setName(name);
   };
 
   const logout = () => {
     setEmail('');
-    setName('')
+    setName('');
   };
 
-  const saveCalendarId = id => {
+  const saveCalendarId = (id) => {
     setCalendarId(id);
   };
+
+  const updateTasks = (listOfTasks) => {
+    setListOfTasks(listOfTasks);
+  };
+
+  const setFilteredList =(filteredList) => {
+    setFilters(filteredList)
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthContext.Provider
-        value={{ email: email, login: login, logout: logout, calendarId: calendarId, saveCalendarId: saveCalendarId, name: name }}
+        value={{
+          email: email,
+          login: login,
+          logout: logout,
+          calendarId: calendarId,
+          saveCalendarId: saveCalendarId,
+          name: name,
+          listOfTasks: listOfTasks,
+          updateTasks: updateTasks,
+          filteredList: filteredList,
+          setFilteredList: setFilteredList
+        }}
       >
         <RootStack />
       </AuthContext.Provider>

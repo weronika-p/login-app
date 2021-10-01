@@ -12,10 +12,11 @@ export const Colors = {
     contrastAccent: "#fff",
     grey: "#474747",
     google: "#4285F4",
-    error: "#DB4437"
+    error: "#DB4437",
+    lightAccent: '#FFD2EA'
 }
 
-const {primary, secondary, tertiary, accent, contrastAccent, grey, google, error} = Colors
+const {primary, secondary, tertiary, accent, contrastAccent, google, error, lightAccent} = Colors
 
 const priorityColors = {
     1: secondary,
@@ -144,6 +145,9 @@ export const StyledButton = styled.TouchableOpacity`
         background-color: ${google};
         flex-direction: row;
         justify-content: center;
+    `}
+    ${props => props.notSelected == true && `
+        background-color: ${lightAccent}
     `}
 `
 

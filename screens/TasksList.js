@@ -3,38 +3,39 @@ import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import axios from 'axios';
 import { url } from '../constants/constants';
-import { FlatList, View, StyleSheet, Modal, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
-import { SubTitle, StyledContainer, WelcomeImage } from '../components/styles';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SubTitle, StyledContainer, WelcomeImage, ExtraView } from '../components/styles';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../components/styles';
-import TaskForm from '../components/AddTask';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { LeftAction, RightAction } from '../components/SwipeActions';
 import { deleteTask, getEventId } from '../shared/sharedFunctions';
 import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
 import Frog from '../components/AnimatedFrog';
+import Modals from '../components/Modals';
 
-const { accent, contrastAccent, tertiary } = Colors;
+const { accent, contrastAccent } = Colors;
 
 export default function TasksList({ navigation, route }) {
-  const [listOfTasks, setListOfTasks] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [typeModal, setTypeModal] = useState('');
 
   const path = `${url}task/list`;
   const swipeableRef = useRef(null);
-  const calendarContext = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-  const closeSwipeable = item => {
+  const closeSwipeable = (item) => {
     swipeableRef.current.close();
-    navigation.navigate('EditTask', item)
+    navigation.navigate('EditTask', item);
   };
 
   const openEventInCalendar = async (date) => {
-    const eventId = await getEventId(calendarContext, date);
+    const eventId = await getEventId(context, date);
     return Calendar.openEventInCalendar(eventId);
   };
 
@@ -48,7 +49,7 @@ export default function TasksList({ navigation, route }) {
       const { data, status } = response;
       if (status === 200) {
         const fetchedTasks = data;
-        return setListOfTasks(fetchedTasks);
+        return context.updateTasks(fetchedTasks);
       }
     } catch (error) {
       return setMessage(error);
@@ -62,23 +63,18 @@ export default function TasksList({ navigation, route }) {
       <>
         <StatusBar style="dark" />
         <StyledContainer>
-          <Modal visible={modalOpen} animationType="slide">
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={{ flex: 1, backgroundColor: tertiary }}>
-                <Ionicons
-                  name="close"
-                  size={24}
-                  style={{ ...styles.modalToggle, ...styles.modalClose }}
-                  onPress={() => setModalOpen(false)}
-                />
-                <TaskForm setModalOpen={setModalOpen} creator={route.params} setListOfTasks={setListOfTasks} />
-              </View>
-            </TouchableWithoutFeedback>
-          </Modal>
-          {listOfTasks.length > 0 ? (
-            <View style={{flex: 1}}>
+          {modalOpen && (
+            <Modals
+              modalOpen={modalOpen}
+              setModalOpen={setModalOpen}
+              typeModal={typeModal}
+            />
+          )}
+          {context.listOfTasks.length
+          ? (
+            <View style={{ flex: 1 }}>
               <FlatList
-                data={listOfTasks}
+                data={context.filteredList.length ? context.filteredList : context.listOfTasks }
                 renderItem={({ item }) => (
                   <Swipeable
                     ref={swipeableRef}
@@ -88,7 +84,7 @@ export default function TasksList({ navigation, route }) {
                     renderRightActions={RightAction}
                     rightThreshold={41}
                     onSwipeableRightOpen={() =>
-                      deleteTask(item._id, setListOfTasks, calendarContext, new Date(item.endDate))
+                      deleteTask(item._id, context, new Date(item.endDate))
                     }
                   >
                     <TouchableOpacity onPress={() => openEventInCalendar(new Date(item.endDate))}>
@@ -110,7 +106,26 @@ export default function TasksList({ navigation, route }) {
               <SubTitle style={{ marginTop: 20, textAlign: 'center' }}>You don't have any tasks :)</SubTitle>
             </>
           )}
-          <Ionicons name="add" size={24} style={styles.modalToggle} onPress={() => setModalOpen(true)} />
+          <ExtraView>
+            <Ionicons
+              name="filter"
+              size={24}
+              style={styles.modalToggle}
+              onPress={() => {
+                setTypeModal('filter');
+                setModalOpen(true);
+              }}
+            />
+            <Ionicons
+              name="add"
+              size={24}
+              style={styles.modalToggle}
+              onPress={() => {
+                setTypeModal('addTask');
+                setModalOpen(true);
+              }}
+            />
+          </ExtraView>
         </StyledContainer>
       </>
     );
@@ -125,12 +140,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'flex-end',
     color: contrastAccent,
-  },
-  modalClose: {
-    marginTop: 20,
-    marginBottom: 0,
-    alignSelf: 'center',
-    color: contrastAccent,
-    backgroundColor: accent,
   },
 });
