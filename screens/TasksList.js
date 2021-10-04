@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useCallback } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
 import axios from 'axios';
@@ -15,6 +15,7 @@ import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
 import Frog from '../components/AnimatedFrog';
 import Modals from '../components/Modals';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { accent, contrastAccent } = Colors;
 
@@ -24,6 +25,7 @@ export default function TasksList({ navigation, route }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [typeModal, setTypeModal] = useState('');
+  const [update, setUpdate] = useState(false)
 
   const path = `${url}task/list`;
   const swipeableRef = useRef(null);
@@ -39,26 +41,52 @@ export default function TasksList({ navigation, route }) {
     return Calendar.openEventInCalendar(eventId);
   };
 
-  async function fetchData() {
-    try {
-      const response = await axios.get(path, {
-        params: {
-          creator: route.params,
-        },
-      });
-      const { data, status } = response;
-      if (status === 200) {
-        const fetchedTasks = data;
-        return context.updateTasks(fetchedTasks);
-      }
-    } catch (error) {
-      return setMessage(error);
-    }
+  const listOfActiveTasks = list => {
+    const activeList = list.filter(task => {
+      return task.status === 'active'
+    })
+    return activeList
   }
 
-  if (!isLoadingComplete) {
-    return <AppLoading startAsync={fetchData} onFinish={() => setIsLoadingComplete(true)} onError={console.warn} />;
-  } else {
+  const changeStatusToDone = async (itemID) => {
+    const id = itemID.toString();
+    const path = `${url}task/${id}/status`;
+    try {
+      const response = await axios.patch(path, { status: 'done' });
+      const { status } = response;
+      if (status === 200) {
+        setUpdate(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useFocusEffect(useCallback(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(path, {
+          params: {
+            creator: context.email,
+          },
+        });
+        const { data, status } = response;
+        if (status === 200) {
+          const fetchedTasks = data;
+          setUpdate(false)
+          return context.updateTasks(fetchedTasks);
+        }
+      } catch (error) {
+        return setMessage(error);
+      }
+    }
+    fetchData()
+  }, [update]))
+   
+
+  // if (!isLoadingComplete) {
+  //   return <AppLoading startAsync={fetchData} onFinish={() => setIsLoadingComplete(true)} onError={console.warn} />;
+  // } else {
     return (
       <>
         <StatusBar style="dark" />
@@ -74,7 +102,7 @@ export default function TasksList({ navigation, route }) {
           ? (
             <View style={{ flex: 1 }}>
               <FlatList
-                data={context.filteredList.length ? context.filteredList : context.listOfTasks }
+                data={context.filteredList.length ? listOfActiveTasks(context.filteredList) : listOfActiveTasks(context.listOfTasks) }
                 renderItem={({ item }) => (
                   <Swipeable
                     ref={swipeableRef}
@@ -84,7 +112,7 @@ export default function TasksList({ navigation, route }) {
                     renderRightActions={RightAction}
                     rightThreshold={41}
                     onSwipeableRightOpen={() =>
-                      deleteTask(item._id, context, new Date(item.endDate))
+                      changeStatusToDone(item._id)
                     }
                   >
                     <TouchableOpacity onPress={() => openEventInCalendar(new Date(item.endDate))}>
@@ -129,7 +157,7 @@ export default function TasksList({ navigation, route }) {
         </StyledContainer>
       </>
     );
-  }
+  // }
 }
 
 const styles = StyleSheet.create({

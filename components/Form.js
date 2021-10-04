@@ -77,6 +77,21 @@ export default function FormLayout({ props, setShow, date, buttonText }) {
         </TouchableOpacity>
         {props.touched.endDate && Boolean(props.errors.endDate) && <MessageBox>{props.errors.endDate}</MessageBox>}
       </View>
+      <View>
+        <LeftIcon>
+          <MaterialIcons name="notes" size={30} color={primary} />
+        </LeftIcon>
+        <StyledInputLabel>Notes</StyledInputLabel>
+        <StyledTextInput
+          placeholder="eg. few words about the task"
+          placeholderTextColor={grey}
+          onChangeText={props.handleChange('notes')}
+          onBlur={props.handleBlur('notes')}
+          value={props.values.notes}
+          multiline
+        />
+        {props.touched.notes && Boolean(props.errors.notes) && <MessageBox>{props.errors.notes}</MessageBox>}
+      </View>
       {!props.isSubmitting && (
         <StyledButton onPress={props.handleSubmit}>
           <ButtonText>{buttonText}</ButtonText>

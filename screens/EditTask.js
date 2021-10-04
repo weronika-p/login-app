@@ -12,7 +12,7 @@ import { getEventId } from '../shared/sharedFunctions';
 import * as Calendar from 'expo-calendar';
 
 export default function TaskForm({ navigation, route }) {
-    const { _id, title, category, priority, endDate } = route.params
+    const { _id, title, category, priority, endDate, notes } = route.params
     const localeDate = endDate.toLocaleString()
     const authContext = useContext(AuthContext)
 
@@ -69,10 +69,12 @@ export default function TaskForm({ navigation, route }) {
           category: category,
           priority: priority,
           endDate: date.toLocaleString(),
+          notes: notes
         }}
         validationSchema={TaskSchema}
         onSubmit={(values, { setSubmitting }) => {
-          values = { ...values, priority: +values.priority, endDate: date };
+          const newNotes = values.notes || 'none'
+          values = { ...values, priority: +values.priority, endDate: date, notes: newNotes};
           handleTaskEditting(values, setSubmitting);
         }}
       >

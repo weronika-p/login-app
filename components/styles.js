@@ -13,9 +13,10 @@ export const Colors = {
     grey: "#474747",
     google: "#4285F4",
     error: "#DB4437",
+    disabled: "#BDBDBD"
 }
 
-const {primary, secondary, tertiary, accent, contrastAccent, google, error } = Colors
+const {primary, secondary, tertiary, accent, contrastAccent, google, error, disabled } = Colors
 
 const priorityColors = {
     1: secondary,
@@ -204,6 +205,7 @@ export const TaskCard = styled.View`
     border-radius: 7px;
     color: ${contrastAccent};
     margin: 15px 4px;
+    background-color: ${disabled};
     ${props => props.priority === 1 &&`
         background-color: ${secondary}
     `}
@@ -219,7 +221,6 @@ export const TaskCard = styled.View`
     ${props => props.priority === 5 &&`
         background-color: ${priorityColors[5]}
     `}
-
 `
 
 export const CardContent = styled.View`

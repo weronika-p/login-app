@@ -29,7 +29,7 @@ const Welcome = ({ navigation, route }) => {
           <StyledFormArea>
             <Avatar source={AvatarImg} />
             <Line />
-            <StyledButton onPress={() => navigation.navigate('TasksList', authContext.email)}>
+            <StyledButton onPress={() => navigation.navigate('ListOfTask', authContext.email)}>
               <ButtonText>Tasks List</ButtonText>
             </StyledButton>
             <StyledButton onPress={() => navigation.navigate('Calendar', authContext.name)}>

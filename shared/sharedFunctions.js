@@ -37,7 +37,7 @@ export const getEventId = async (calendarContext, date) => {
     return eventId
 };
 
-const deleteItem = (array, deletedId) => {
+export const deleteItem = (array, deletedId) => {
     const updatedArray = [...array].filter(item => {
         const id = item._id.toString()
         return id !== deletedId
@@ -54,7 +54,7 @@ async function playSound() {
     }   
 }
 
-export const deleteTask = async (itemID, context, date) => {
+export const deleteTask = async (itemID, context, date, setUpdate) => {
     const id = itemID.toString()
     const path = `${url}task/delete/${id}`
    try {
@@ -68,6 +68,7 @@ export const deleteTask = async (itemID, context, date) => {
            }
            playSound()
            context.updateTasks(prevState => deleteItem(prevState, id))
+           setUpdate(true)
        }
    } catch (error) {
     console.log(error)
