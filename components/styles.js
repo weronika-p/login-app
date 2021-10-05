@@ -40,9 +40,10 @@ export const InnerContainer = styled.View`
 `
 
 export const WelcomeContainer = styled(InnerContainer)`
-    padding: 25px;
-    padding-top: 5px;
     justify-content: center;
+    height: 60%;
+    margin-top: 15px;
+    flex: 3;
 `
 
 export const PageLogo = styled.Image`
@@ -59,9 +60,9 @@ export const Avatar = styled.Image`
 `
 
 export const WelcomeImage = styled.Image`
-    margin-top: 40px;
-    height: 30%;
+    height: 20%;
     width: 100%;
+    flex: 1;
 `
 
 export const AboutMeImage = styled.Image`
@@ -139,7 +140,7 @@ export const StyledButton = styled.TouchableOpacity`
     align-items: center;
     border-radius: 5px;
     margin-vertical: 5px;
-    height: 60px;
+    height: 13%;
 
     ${(props) => props.google == true && `
         background-color: ${google};
@@ -181,7 +182,7 @@ export const ExtraView = styled.View`
     justify-content: center;
     flex-direction: row;
     align-items: center;
-    padding: 10px;
+    flex: 1;
 `
 
 export const ExtraText = styled.Text`

@@ -22,7 +22,6 @@ const Welcome = ({ navigation, route }) => {
     <>
       <StatusBar style="dark" />
       <InnerContainer style={{backgroundColor: '#cee6f6'}}>
-        <WelcomeImage source={require('./../assets/1200.png')} />
         <WelcomeContainer>
           <PageTitle welcome={true}>Welcome!</PageTitle>
           <SubTitle welcome={true}>{authContext.name || 'Mikello'}</SubTitle>

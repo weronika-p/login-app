@@ -101,7 +101,7 @@ export default function TasksList({ navigation, route }) {
           )}
           {context.listOfTasks.length
           ? (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 3 }}>
               <FlatList
                 data={context.filteredList.length ? listOfActiveTasks(context.filteredList) : listOfActiveTasks(context.listOfTasks) }
                 renderItem={({ item }) => (
