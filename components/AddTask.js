@@ -11,6 +11,7 @@ import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
 import { fetchCalendarId } from '../shared/sharedFunctions';
 import KeyboardAvoidingWrapper from './KeyboardAvoidingWrapper';
+import errorAlert from './ErrorAlert';
 
 export default function TaskForm({ setModalOpen }) {
   const [show, setShow] = useState(false);
@@ -28,10 +29,8 @@ export default function TaskForm({ setModalOpen }) {
 
   const handleTaskSubmission = async (values, setSubmitting) => {
     const req = { ...values, creator: email, status: 'active' };
-    console.log(req)
     try {
       const response = await axios.post(path, req);
-      console.log(response)
       const { status, data } = response;
       if (status === 200) {
         updateTasks((prevState) => sortArray(prevState, data));
@@ -55,7 +54,7 @@ export default function TaskForm({ setModalOpen }) {
       }
     } catch (error) {
       setSubmitting(false);
-      console.log(error);
+      errorAlert(error.response.data)
     }
   };
 

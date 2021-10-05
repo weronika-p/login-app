@@ -16,6 +16,7 @@ import { AuthContext } from '../context/auth-context';
 import Frog from '../components/AnimatedFrog';
 import Modals from '../components/Modals';
 import { useFocusEffect } from '@react-navigation/native';
+import errorAlert from '../components/ErrorAlert';
 
 const { accent, contrastAccent } = Colors;
 
@@ -58,7 +59,7 @@ export default function TasksList({ navigation, route }) {
         setUpdate(true);
       }
     } catch (error) {
-      console.log(error);
+      errorAlert(error.response.data);
     }
   };
 
@@ -77,7 +78,7 @@ export default function TasksList({ navigation, route }) {
           return context.updateTasks(fetchedTasks);
         }
       } catch (error) {
-        return setMessage(error);
+        return errorAlert(error.response.data)
       }
     }
     fetchData()

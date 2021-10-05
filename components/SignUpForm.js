@@ -63,7 +63,6 @@ export default function SignUpForm({ navigation }) {
       .catch((err) => {
         setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-        console.log(err.toJSON())
       });
   };
 

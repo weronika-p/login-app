@@ -54,7 +54,6 @@ export default function LoginForm({ navigation }) {
       .catch(err => {
         setSubmitting(false)
         handleMessage('An error occurred. Check your network and try again')
-        console.log(err.toJSON())
     })
   }
 
@@ -80,7 +79,6 @@ export default function LoginForm({ navigation }) {
         setGoogleSubmitting(false)
       })
       .catch(error => {
-        console.log(error)
         handleMessage('An error occured. Check your network and try again')
         setGoogleSubmitting(false)
       })

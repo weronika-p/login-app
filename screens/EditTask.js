@@ -5,11 +5,12 @@ import { url } from '../constants/constants';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FormLayout from '../components/Form';
-import successAlert from '../components/Alert';
+import successAlert from '../components/SuccessAlert';
 import { StyledContainer } from '../components/styles';
 import { AuthContext } from '../context/auth-context';
 import { getEventId } from '../shared/sharedFunctions';
 import * as Calendar from 'expo-calendar';
+import errorAlert from '../components/ErrorAlert';
 
 export default function TaskForm({ navigation, route }) {
     const { _id, title, category, priority, endDate, notes } = route.params
@@ -41,13 +42,13 @@ export default function TaskForm({ navigation, route }) {
           startDate: values.endDate,
           endDate: values.endDate
         })
-        : console.log('We could not find an event')
+        : errorAlert('We could not find an event')
         setSubmitting(false);
         successAlert(navigation, authContext.email, 'Task has just been updated successfuly')
       }
     } catch (error) {
       setSubmitting(false);
-      console.log(error);
+      errorAlert(error.response.data);
     }
   };
 

@@ -5,7 +5,8 @@ import { ButtonText, StyledButton, StyledContainer, SubTitle } from '../componen
 import { AuthContext } from '../context/auth-context';
 import { url } from '../constants/constants';
 import axios from 'axios';
-import successAlert from '../components/Alert';
+import successAlert from '../components/SuccessAlert';
+import errorAlert from '../components/ErrorAlert';
 
 export default function CalendarView({ navigation, route }) {
     const context = useContext(AuthContext)
@@ -30,7 +31,7 @@ export default function CalendarView({ navigation, route }) {
           successAlert(navigation, context.email, 'Calendar has just been created successfuly')
         }
       } catch (error) {
-        console.log(error)
+        errorAlert(error.response.data)
       }
     }
       

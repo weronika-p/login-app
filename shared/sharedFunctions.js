@@ -2,6 +2,7 @@ import axios from "axios"
 import { url } from "../constants/constants"
 import * as Calendar from 'expo-calendar';
 import { Audio } from 'expo-av'
+import errorAlert from "../components/ErrorAlert";
 
 export const sortArray = (array, newItem) => {
     const newArray = [...array, newItem]
@@ -24,7 +25,7 @@ export const fetchCalendarId = async (email, saveCalendarId) => {
             return fetchedId
         }
     } catch (error) {
-        console.log(error)
+        errorAlert(error.response.data)
     }
 }
 
@@ -50,7 +51,7 @@ async function playSound() {
         const { sound } = await Audio.Sound.createAsync(require('../assets/swish.mp3'))
         await sound.playAsync()    
     } catch (error) {
-        console.log(error)
+        errorAlert('Error occured during loading the sound')
     }   
 }
 
@@ -64,13 +65,13 @@ export const deleteTask = async (itemID, context, date, setUpdate) => {
            if (eventId) {
            await Calendar.deleteEventAsync(eventId)
            } else {
-            console.log('We could not find a task')
+            errorAlert('We could not find a task')
            }
            playSound()
            context.updateTasks(prevState => deleteItem(prevState, id))
            setUpdate(true)
        }
    } catch (error) {
-    console.log(error)
+    errorAlert(error.response.data)
    }
 }

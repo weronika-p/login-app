@@ -5,14 +5,12 @@ import { url } from '../constants/constants';
 import { FlatList, View, TouchableOpacity } from 'react-native';
 import { SubTitle, StyledContainer } from '../components/styles';
 import Card from '../components/Card';
-import { Colors } from '../components/styles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { LeftAction, RightAction } from '../components/SwipeActions';
 import { deleteItem, deleteTask } from '../shared/sharedFunctions';
 import { AuthContext } from '../context/auth-context';
 import { useFocusEffect } from '@react-navigation/native';
-
-const { contrastAccent } = Colors;
+import errorAlert from '../components/ErrorAlert';
 
 export default function DoneTasksList({ navigation }) {
   const [doneTasks, setDoneTasks] = useState([]);
@@ -43,7 +41,7 @@ export default function DoneTasksList({ navigation }) {
         navigation.navigate('TasksList')
       }
     } catch (error) {
-      console.log(error);
+      errorAlert(error.response.data)
     }
   };
 
