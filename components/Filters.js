@@ -1,10 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { ButtonText, ExtraView, FilterButton, StyledButton } from './styles';
 import { AuthContext } from '../context/auth-context';
-import { Colors } from './styles';
-
-const { accent } = Colors;
 
 export default function Filters({ setModalOpen }) {
   const { listOfTasks, setFilteredList, selectedFilters, setSelectedFilters } = useContext(AuthContext);

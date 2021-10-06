@@ -1,6 +1,5 @@
 import React, { useState, useRef, useContext, useCallback } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import AppLoading from 'expo-app-loading';
 import axios from 'axios';
 import { url } from '../constants/constants';
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
@@ -10,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../components/styles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { LeftAction, RightAction } from '../components/SwipeActions';
-import { deleteTask, getEventId } from '../shared/sharedFunctions';
+import { getEventId } from '../shared/sharedFunctions';
 import * as Calendar from 'expo-calendar';
 import { AuthContext } from '../context/auth-context';
 import Frog from '../components/AnimatedFrog';
@@ -20,11 +19,8 @@ import errorAlert from '../components/ErrorAlert';
 
 const { accent, contrastAccent } = Colors;
 
-export default function TasksList({ navigation, route }) {
-  const [message, setMessage] = useState('');
-  const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+export default function TasksList({ navigation }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [typeModal, setTypeModal] = useState('');
   const [update, setUpdate] = useState(false)
 
@@ -84,10 +80,6 @@ export default function TasksList({ navigation, route }) {
     fetchData()
   }, [update]))
    
-
-  // if (!isLoadingComplete) {
-  //   return <AppLoading startAsync={fetchData} onFinish={() => setIsLoadingComplete(true)} onError={console.warn} />;
-  // } else {
     return (
       <>
         <StatusBar style="dark" />
@@ -158,7 +150,6 @@ export default function TasksList({ navigation, route }) {
         </StyledContainer>
       </>
     );
-  // }
 }
 
 const styles = StyleSheet.create({
