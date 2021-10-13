@@ -2,13 +2,13 @@
   "expo": {
     "name": "Mikello-App",
     "slug": "Mikello-App",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/profile-pic.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/profile-pic.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#cee6f6"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

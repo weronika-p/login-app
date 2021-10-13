@@ -228,6 +228,7 @@ export const CardContent = styled.View`
     margin: 18px 20px;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 `
 
 export const StyledAdd = styled.View`

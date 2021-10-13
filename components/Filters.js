@@ -56,11 +56,11 @@ export default function Filters({ setModalOpen }) {
         })}
       </View>
       <ExtraView style={{ justifyContent: 'space-between' }}>
-        <StyledButton onPress={() => applyFilters()}>
-          <ButtonText>Apply filters</ButtonText>
-        </StyledButton>
         <StyledButton onPress={() => clearFilters()}>
           <ButtonText>Clear filters</ButtonText>
+        </StyledButton>
+        <StyledButton onPress={() => applyFilters()}>
+          <ButtonText>Apply filters</ButtonText>
         </StyledButton>
       </ExtraView>
     </View>

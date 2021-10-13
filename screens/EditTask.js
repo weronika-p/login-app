@@ -44,7 +44,7 @@ export default function TaskForm({ navigation, route }) {
         })
         : errorAlert('We could not find an event')
         setSubmitting(false);
-        successAlert(navigation, authContext.email, 'Task has just been updated successfuly')
+        successAlert(navigation, 'Task has just been updated successfuly')
       }
     } catch (error) {
       setSubmitting(false);

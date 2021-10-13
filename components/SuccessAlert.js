@@ -1,12 +1,12 @@
 import { Alert } from "react-native";
 
-const successAlert = (navigation, email, text) => {
+const successAlert = (navigation, text) => {
     Alert.alert(
         'SUCCESS!',
         text,
         [{
-            text: 'Back to Welcome page',
-            onPress: () => navigation.navigate('Welcome', email)
+            text: 'Back to Task List page',
+            onPress: () => navigation.navigate('ListOfTask')
         }],
         { cancelable: false }
     )

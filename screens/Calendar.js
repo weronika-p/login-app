@@ -28,7 +28,7 @@ export default function CalendarView({ navigation, route }) {
         const response = await axios.post(path, data)
         const result = response.data
         if(result.status === 200) {
-          successAlert(navigation, context.email, 'Calendar has just been created successfuly')
+          successAlert(navigation, 'Calendar has just been created successfuly')
         }
       } catch (error) {
         errorAlert(error.response.data)
